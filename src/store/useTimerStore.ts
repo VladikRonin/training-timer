@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { playBeep } from "../utils/sound";
+import { unlockAudio } from "../utils/sound";
 
 export type Phase =
   "idle" | "prepare" | "work" | "rest" | "cycleRest" | "finished";
@@ -63,6 +64,7 @@ export const useTimerStore = create<TimerState>()(
         }),
 
       start: () => {
+        unlockAudio(); // Разблокируем звук по клику пользователя
         const { phase } = get();
         if (phase === "idle" || phase === "finished") {
           playBeep(440, 0.2);
